@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="180.0dip">
+
+        <ImageView xmlns:n2="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/Pet_IV_petimage"
+            android:layout_width="fill_parent"
+            android:layout_height="150.0dip"
+            android:layout_gravity="top"
+            n2:srcCompat="@color/color_black" />
+
+        <ImageButton xmlns:n3="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/Pet_BTN_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center|right"
+            android:background="@null"
+            n3:srcCompat="@drawable/camerabutton" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="20.0dip"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginTop="20.0dip">
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20.0dip">
+
+                    <LinearLayout
+                        android:layout_width="338.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="20.0dip"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="견종/이름"
+                            android:textSize="20.0sp" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/Pet_ET_pettype"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:ems="10"
+                                android:focusable="false"
+                                android:hint="견종선택"
+                                android:inputType="textPersonName" />
+
+                            <EditText
+                                android:id="@+id/Pet_ET_petname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:ems="10"
+                                android:hint="이름입력"
+                                android:inputType="textPersonName" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="20.0dip">
+
+                    <LinearLayout
+                        android:layout_width="338.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="20.0dip"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="나이"
+                            android:textSize="20.0sp" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/Pet_ET_age"
+                                android:layout_width="153.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:ems="10"
+                                android:hint="개월/년을 선택"
+                                android:inputType="textPersonName" />
+
+                            <Button
+                                android:id="@+id/Pet_BTN_agemonth"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:text="개월"
+                                android:backgroundTint="@color/color_button_click"/>
+
+                            <Button
+                                android:id="@+id/Pet_BTN_ageyear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:text="년"
+                                android:backgroundTint="@color/color_button_back"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="20.0dip">
+
+                    <LinearLayout
+                        android:layout_width="338.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="20.0dip"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="몸무게/성별"
+                            android:textSize="20.0sp" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/Pet_ET_weight"
+                                android:layout_width="65.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:ems="10"
+                                android:hint="몸무게 입력"
+                                android:inputType="textPersonName" />
+
+                            <Spinner
+                                android:id="@+id/Pet_SPIN_sex"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.0"
+                                android:entries="@array/sex" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
+
+            <Button
+                android:id="@+id/Pet_BTN_registerpet"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="등록"
+                android:backgroundTint="@color/color_button_back"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

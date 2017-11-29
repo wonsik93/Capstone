@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="color_background">#fff2ebbf</color>
+    <color name="color_black">#000000</color>
+    <color name="color_button_back">#ffff6811</color>
+    <color name="color_button_click">#ffae43be</color>
+    <color name="color_button_text">#ffffffff</color>
+    <color name="color_editactivated">#fff03a76</color>
+    <color name="color_editdrawable">#ff303f9f</color>
+    <color name="color_edithighlight">@null</color>
+    <color name="color_edithint">#ff0c918a</color>
+    <color name="color_editnormal">#ffffca00</color>
+    <color name="color_edittext">#ffff6811</color>
+    <color name="color_text_main">#ff5c4b51</color>
+    <color name="color_text_sub">#ff000000</color>
+    <color name="color_white">#ffffffff</color>
+</resources>
