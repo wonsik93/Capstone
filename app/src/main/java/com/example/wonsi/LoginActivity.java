@@ -15,6 +15,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.wonsi.Helper.Constants;
+import com.example.wonsi.Helper.NetworkConnection;
+
 import org.apache.http.NameValuePair;
 
 import java.io.BufferedReader;
@@ -42,8 +45,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button button_login;
     Button button_register;
     CheckBox cb_autologin;
-    ProgressDialog dialog = null;
-    List<NameValuePair> params;
     HttpURLConnection conn;
     NetworkConnection conncheck = new NetworkConnection(LoginActivity.this);
 
@@ -119,10 +120,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == DO_REGISTER) {
             if (resultCode == RESULT_OK) {
-                String newuserid = data.getStringExtra("id");
-                String newuserpw = data.getStringExtra("pw");
-                Toast.makeText(LoginActivity.this, newuserid + newuserpw, Toast.LENGTH_SHORT).show();
-                new Userlogin().execute(newuserid, newuserpw);
+                editText_userid.setText(data.getStringExtra("id"));
+                editText_userpw.setText(data.getStringExtra("pw"));
+                //new Userlogin().execute(newuserid, newuserpw);
             }
         }
     }
@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected String doInBackground(String... params) {
 
             try {
-                URL url = new URL("http://18.216.142.72/login.php");
+                URL url = new URL(Constants.SERVER_LOGIN_PHP);
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");

@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.wonsi.Helper.Constants;
+import com.example.wonsi.Helper.NetworkConnection;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -95,7 +98,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
         protected String doInBackground(String... params) {
 
             try {
-                URL url = new URL("http://18.216.142.72/register.php");
+                URL url = new URL(Constants.SERVER_REGISTER_PHP);
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
@@ -146,6 +149,8 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
                 registerSuccessAlert();
             } else if (result.equalsIgnoreCase("false")) {
                 Toast.makeText(RegisterUserActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+            } else if (result.equalsIgnoreCase("user exist")){
+                Toast.makeText(RegisterUserActivity.this, "아이디가 중복되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
         }

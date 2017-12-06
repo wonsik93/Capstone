@@ -10,11 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <ImageView xmlns:n2="http://schemas.android.com/apk/res-auto"
+        <com.android.volley.toolbox.NetworkImageView xmlns:n2="http://schemas.android.com/apk/res-auto"
             android:id="@+id/Pet_IV_petimage"
             android:layout_width="200dp"
-            android:layout_height="200dp"
-            n2:srcCompat="@color/color_black" />
+            android:layout_height="200dp" />
 
         <ImageButton xmlns:n3="http://schemas.android.com/apk/res-auto"
             android:id="@+id/Pet_BTN_picture"
@@ -187,7 +186,7 @@
                 android:id="@+id/Pet_BTN_registerpet"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="등록"
+                android:text="수정"
                 android:backgroundTint="@color/color_button_back"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"/>

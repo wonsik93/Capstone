@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,7 +22,12 @@
         </activity>
         <activity android:name=".MainActivity"/>
         <activity android:name=".RegisterUserActivity"/>
-        <activity android:name=".ReadBarcodebyZxingActivity"
+        <activity android:name=".RegisterPetActivity"/>
+        <activity android:name=".ShowFoodDataActivity"/>
+        <activity android:name=".GetPetTypeActivity"/>
+        <activity android:name=".ShowPetDataActivity"/>
+        <activity android:name=".ShowFoodContainActivity"/>
+        <activity android:name=".ReadBarcodebyZxingActivity"/>
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"

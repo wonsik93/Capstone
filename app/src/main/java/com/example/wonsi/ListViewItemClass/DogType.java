@@ -1,4 +1,4 @@
-package com.example.wonsi;
+package com.example.wonsi.ListViewItemClass;
 
 import android.graphics.drawable.Drawable;
 
@@ -12,8 +12,8 @@ public class DogType {
     Drawable drawable;
 
     public DogType(int typeID, String typeName, Drawable drawable) {
-        TypeID = typeID;
-        TypeName = typeName;
+        this.TypeID = typeID;
+        this.TypeName = typeName;
         this.drawable = drawable;
     }
 

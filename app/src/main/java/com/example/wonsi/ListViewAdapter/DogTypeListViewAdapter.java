@@ -1,42 +1,37 @@
-package com.example.wonsi;
+package com.example.wonsi.ListViewAdapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.example.wonsi.ListViewItemClass.DogType;
+import com.example.wonsi.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by wonsi on 2017-11-27.
  */
 
-public class DogTypeListViewAdapter extends BaseAdapter {
-    private ArrayList<DogType> originalDogTypes = new ArrayList<>();
-    private ArrayList<DogType> copyDogTypes = originalDogTypes;
-    Filter filter;
-
-    public DogTypeListViewAdapter(){
+public class DogTypeListViewAdapter extends BaseAdapter  {
+    private List<DogType> originalDogTypes;
+    public DogTypeListViewAdapter(List<DogType> list){
+        this.originalDogTypes = list;
 
     }
 
     @Override
     public int getCount() {
-        return copyDogTypes.size();
+        return originalDogTypes.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return copyDogTypes.get(i);
+        return originalDogTypes.get(i);
     }
 
     @Override
@@ -55,7 +50,7 @@ public class DogTypeListViewAdapter extends BaseAdapter {
         ImageView iv_typeimage = (ImageView) view.findViewById(R.id.Item_LV_image);
         TextView tv_typename = (TextView) view.findViewById(R.id.Item_TV_type);
 
-        DogType newDogType = copyDogTypes.get(i);
+        DogType newDogType = originalDogTypes.get(i);
         iv_typeimage.setImageDrawable(newDogType.getDrawable());
         tv_typename.setText(newDogType.getTypeName());
         return view;
@@ -64,30 +59,6 @@ public class DogTypeListViewAdapter extends BaseAdapter {
         originalDogTypes.add(dogType);
     }
 
-    public Filter getFilter(){
-        if (filter == null){
-            filter = new ListFilter();
-        }
-        return filter;
-    }
 
-    private class ListFilter extends Filter{
-
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            FilterResults results = new FilterResults();
-
-            if(charSequence == null || charSequence.length() == 0){
-                results.values = originalDogTypes;
-                results.count = originalDogTypes.size();
-            }
-            return null;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-
-        }
-    }
 
 }

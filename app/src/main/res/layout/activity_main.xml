@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/maindesign"
+    android:background="@drawable/main_layout"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/Main_TV_hellouser"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40.0dip"
@@ -26,9 +26,12 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/Main_ScrollView_mypet"
                 android:layout_width="fill_parent"
                 android:layout_height="120.0dip"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                />
         </HorizontalScrollView>
     </LinearLayout>
 
