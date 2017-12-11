@@ -154,7 +154,7 @@
                             android:id="@+id/textView3"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="몸무게(kg) / 성별"
+                            android:text="몸무게(kg) / 크기"
                             android:textSize="20.0sp" />
 
                         <LinearLayout
@@ -176,7 +176,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.0"
-                                android:entries="@array/sex" />
+                                android:entries="@array/breed" />
                         </LinearLayout>
                     </LinearLayout>
                 </TableRow>

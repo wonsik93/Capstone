@@ -11,29 +11,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/Recommend_Spin_petname"
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Recommend_BTN_fit"
+                android:id="@+id/DogorCat_BTN_dog"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_weight="1"
-                android:background="@drawable/buttonfit" />
+                android:background="@drawable/dialogdog" />
 
             <Button
-                android:id="@+id/Recommend_BTN_food"
+                android:id="@+id/DogorCat_BTN_cat"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_weight="1"
-                android:background="@drawable/buttonrecom" />
+                android:background="@drawable/dialogcat" />
         </LinearLayout>
     </LinearLayout>
 

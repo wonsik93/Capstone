@@ -18,8 +18,6 @@ import android.widget.Toast;
 import com.example.wonsi.Helper.Constants;
 import com.example.wonsi.Helper.NetworkConnection;
 
-import org.apache.http.NameValuePair;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -28,7 +26,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 /**
  * Created by wonsi on 2017-11-26.
@@ -40,11 +37,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String userid;
     String userpw;
     Boolean autologin;
-    EditText editText_userid;
-    EditText editText_userpw;
-    Button button_login;
-    Button button_register;
-    CheckBox cb_autologin;
+    private EditText editText_userid;
+    private EditText editText_userpw;
+    private Button button_login;
+    private Button button_register;
+    private CheckBox cb_autologin;
     HttpURLConnection conn;
     NetworkConnection conncheck = new NetworkConnection(LoginActivity.this);
 
@@ -59,15 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (conncheck.checkConnection() == false) {
             conncheck.connectErrorAlert();
         }
-
-        editText_userid = (EditText) findViewById(R.id.Login_ET_ID);
-        editText_userpw = (EditText) findViewById(R.id.Login_ET_password);
-        cb_autologin = (CheckBox) findViewById(R.id.Login_CB_saveid);
-
-        button_login = (Button) findViewById(R.id.Login_BTN_login);
-        button_register = (Button) findViewById(R.id.Login_BTN_register);
-        button_login.setOnClickListener(this);
-        button_register.setOnClickListener(this);
+        initLayout();
 
         settings = getSharedPreferences("settings", Activity.MODE_PRIVATE);
         autologin = settings.getBoolean("check", false);
@@ -80,6 +69,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (!settings.getString("userid", "").equals("")) editText_userpw.requestFocus();
 
+    }
+    private void initLayout(){
+        editText_userid = (EditText) findViewById(R.id.Login_ET_ID);
+        editText_userpw = (EditText) findViewById(R.id.Login_ET_password);
+        cb_autologin = (CheckBox) findViewById(R.id.Login_CB_saveid);
+
+        button_login = (Button) findViewById(R.id.Login_BTN_login);
+        button_register = (Button) findViewById(R.id.Login_BTN_register);
+        button_login.setOnClickListener(this);
+        button_register.setOnClickListener(this);
     }
 
     @Override
@@ -122,7 +121,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (resultCode == RESULT_OK) {
                 editText_userid.setText(data.getStringExtra("id"));
                 editText_userpw.setText(data.getStringExtra("pw"));
-                //new Userlogin().execute(newuserid, newuserpw);
             }
         }
     }
@@ -191,7 +189,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
                 finish();
             } else if (result.equalsIgnoreCase("false")) {
-                Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "아이디나 비밀번호 입력이 잘못되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
         }

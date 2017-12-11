@@ -93,7 +93,7 @@ public class GetPetTypeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent();
-                        intent.putExtra("TypeName",returnTypeName);
+                        intent.putExtra("TypeName", returnTypeName);
                         intent.putExtra("TypeID", returnTypeID);
                         setResult(Activity.RESULT_OK, intent);
                         finish();
@@ -113,6 +113,38 @@ public class GetPetTypeActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setDogtypeListview() {
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                originList.add(new DogType(jsonObject.getInt("TypeID"), jsonObject.getString("TypeName"), ContextCompat.getDrawable(this, R.drawable.intro)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        copyList = new ArrayList<>();
+        copyList.addAll(originList);
+        listViewAdapter = new DogTypeListViewAdapter(originList);
+        listview_pettype.setAdapter(listViewAdapter);
+
+    }
+
+    private void searchType(String typeText) {
+        originList.clear();
+        if (typeText.length() == 0) {
+            originList.addAll(copyList);
+        } else {
+            for (int i = 0; i < copyList.size(); i++) {
+                if (copyList.get(i).getTypeName().toLowerCase().contains(typeText)) {
+                    originList.add(copyList.get(i));
+                }
+            }
+        }
+        listViewAdapter.notifyDataSetChanged();
     }
 
     private class GetPetType extends AsyncTask<String, String, String> {
@@ -180,36 +212,5 @@ public class GetPetTypeActivity extends AppCompatActivity {
             }
 
         }
-    }
-    private void setDogtypeListview(){
-
-        for(int i=0; i<jsonArray.length();i++){
-            try {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                originList.add(new DogType(jsonObject.getInt("TypeID"),jsonObject.getString("TypeName"),ContextCompat.getDrawable(this,R.drawable.intro)));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        copyList = new ArrayList<>();
-        copyList.addAll(originList);
-        listViewAdapter = new DogTypeListViewAdapter(originList);
-        listview_pettype.setAdapter(listViewAdapter);
-
-    }
-    private void searchType(String typeText){
-        originList.clear();
-        if(typeText.length() ==0){
-            originList.addAll(copyList);
-        }
-        else{
-            for(int i=0;i<copyList.size();i++){
-                if(copyList.get(i).getTypeName().toLowerCase().contains(typeText)){
-                    originList.add(copyList.get(i));
-                }
-            }
-        }
-        listViewAdapter.notifyDataSetChanged();
     }
 }

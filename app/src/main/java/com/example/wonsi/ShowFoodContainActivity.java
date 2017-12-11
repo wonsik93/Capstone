@@ -67,7 +67,7 @@ public class ShowFoodContainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        //barcode = intent.getStringExtra("barcode");
+        barcode = intent.getStringExtra("barcode");
         protein = intent.getFloatExtra("protein",0);
         fat = intent.getFloatExtra("fat",0);
         ash = intent.getFloatExtra("ash",0);
@@ -83,7 +83,7 @@ public class ShowFoodContainActivity extends AppCompatActivity {
         mContext = this.getBaseContext();
 
         // 나중에는 Barcode 값을 변경해야함
-        barcode = "5060189111930";
+
         setContentView(R.layout.activity_showfoodcontain);
         GetFoodContainData getFoodContainData = new GetFoodContainData();
         getFoodContainData.execute(barcode);
@@ -134,7 +134,7 @@ public class ShowFoodContainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             try {
-                URL url = new URL("http://18.216.142.72/getFoodContain.php");
+                URL url = new URL("http://18.216.142.72/Android/getFoodContain.php");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");

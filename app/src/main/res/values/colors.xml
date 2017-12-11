@@ -3,11 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorRed">#ffaa33</color>
     <color name="color_background">#fff2ebbf</color>
     <color name="color_black">#000000</color>
     <color name="color_button_back">#ffff6811</color>
     <color name="color_button_click">#ffae43be</color>
-    <color name="color_button_text">#ffffffff</color>
+    <color name="color_button_text">#ffffff</color>
     <color name="color_editactivated">#fff03a76</color>
     <color name="color_editdrawable">#ff303f9f</color>
     <color name="color_edithighlight">@null</color>

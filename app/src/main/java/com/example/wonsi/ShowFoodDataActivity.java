@@ -8,7 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.ViewGroup;
+import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -40,18 +42,6 @@ import java.util.ArrayList;
  */
 
 public class ShowFoodDataActivity extends AppCompatActivity {
-    private String barcode;
-    private String jsonresult;
-    private JSONArray jsonArray;
-    private HttpURLConnection conn;
-    private PieChart foodAnalysisChart;
-    private PieData foodAnalysisData;
-    private PieDataSet foodAnalysisDataSet;
-    private boolean isPregnant = false;
-    private boolean isSmell = false;
-    private boolean isTeeth = false;
-    private boolean isDiet = false;
-
     float protein;
     float fat;
     float ash;
@@ -64,8 +54,17 @@ public class ShowFoodDataActivity extends AppCompatActivity {
     float vitamina;
     float vitamind;
     float vitamine;
-
-
+    private String barcode;
+    private String jsonresult;
+    private JSONArray jsonArray;
+    private HttpURLConnection conn;
+    private PieChart foodAnalysisChart;
+    private PieData foodAnalysisData;
+    private PieDataSet foodAnalysisDataSet;
+    private boolean isPregnant = false;
+    private boolean isSmell = false;
+    private boolean isTeeth = false;
+    private boolean isDiet = false;
     private GridLayout gridLayout_special;
     private TextView tv_foodname;
     private TextView tv_origin;
@@ -78,6 +77,9 @@ public class ShowFoodDataActivity extends AppCompatActivity {
     private TextView tv_breedfrom;
     private TextView tv_breedto;
     private TextView tv_score;
+    private TextView tv_reviewUserName;
+    private TextView tv_reviewBody;
+    private Button btn_review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,19 +113,19 @@ public class ShowFoodDataActivity extends AppCompatActivity {
             @Override
             public void onChartSingleTapped(MotionEvent me) {
                 Intent intent = new Intent(ShowFoodDataActivity.this, ShowFoodContainActivity.class);
-                intent.putExtra("barcode",barcode);
-                intent.putExtra("protein",protein);
-                intent.putExtra("fat",fat);
-                intent.putExtra("ash",ash);
-                intent.putExtra("fiber",fiber);
-                intent.putExtra("moisture",moisture);
-                intent.putExtra("calcium",calcium);
-                intent.putExtra("phosphorus",phosphorus);
-                intent.putExtra("omega3",omega3);
-                intent.putExtra("omega6",omega6);
-                intent.putExtra("vitamina",vitamina);
-                intent.putExtra("vitamind",vitamind);
-                intent.putExtra("vitamine",vitamine);
+                intent.putExtra("barcode", barcode);
+                intent.putExtra("protein", protein);
+                intent.putExtra("fat", fat);
+                intent.putExtra("ash", ash);
+                intent.putExtra("fiber", fiber);
+                intent.putExtra("moisture", moisture);
+                intent.putExtra("calcium", calcium);
+                intent.putExtra("phosphorus", phosphorus);
+                intent.putExtra("omega3", omega3);
+                intent.putExtra("omega6", omega6);
+                intent.putExtra("vitamina", vitamina);
+                intent.putExtra("vitamind", vitamind);
+                intent.putExtra("vitamine", vitamine);
                 startActivity(intent);
             }
 
@@ -156,8 +158,17 @@ public class ShowFoodDataActivity extends AppCompatActivity {
         tv_breedfrom = (TextView) findViewById(R.id.Barcode_TV_breedfrom);
         tv_breedto = (TextView) findViewById(R.id.Barcode_TV_breedto);
         tv_score = (TextView) findViewById(R.id.Barcode_TV_score);
+        tv_reviewUserName = (TextView) findViewById(R.id.Barcode_TV_reviewUserName);
+        tv_reviewBody = (TextView) findViewById(R.id.Barcode_TV_reviewBody);
         foodAnalysisChart = (PieChart) findViewById(R.id.Barcode_Chart_Bar);
         gridLayout_special = (GridLayout) findViewById(R.id.Barcode_GL_special);
+        btn_review = (Button) findViewById(R.id.Barcode_BTN_review);
+        btn_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setFoodData() {
@@ -170,21 +181,29 @@ public class ShowFoodDataActivity extends AppCompatActivity {
             tv_origin.setText(jsonObject.getString("Origin"));
             tv_maker.setText(jsonObject.getString("Maker"));
             //tv_whom.setText(jsonObject.getString("Whom"));
-            if(jsonObject.getString("BreedFrom").equals("0")) tv_breedfrom.setText("소형");
-            if(jsonObject.getString("BreedFrom").equals("1")) tv_breedfrom.setText("중형");
-            if(jsonObject.getString("BreedTo").equals("1")) tv_breedto.setText("중형");
-            if(jsonObject.getString("BreedTo").equals("2")) tv_breedto.setText("대형");
-            //tv_breedfrom.setText(jsonObject.getString("BreedFrom"));
-            //tv_breedto.setText(jsonObject.getString("BreedTo"));
-            if(jsonObject.getInt("PregnantFnt") == 1) isPregnant=true;
-            if(jsonObject.getInt("SmellFnt") == 1) isSmell=true;
-            if(jsonObject.getInt("TeethFnt") == 1) isTeeth=true;
-            if(jsonObject.getInt("DietFnt") == 1) isDiet=true;
-            tv_agefrom.setText(jsonObject.getString("AgeFrom") + "개월");
-            if(jsonObject.getString("AgeTo").equals("1000")) tv_ageto.setText("무제한");
-            else tv_ageto.setText(jsonObject.getString("AgeTo"));
+            if (jsonObject.getString("BreedFrom").equals("0")) tv_breedfrom.setText("소형");
+            if (jsonObject.getString("BreedFrom").equals("1")) tv_breedfrom.setText("중형");
+            if (jsonObject.getString("BreedTo").equals("1")) tv_breedto.setText("중형");
+            if (jsonObject.getString("BreedTo").equals("2")) tv_breedto.setText("대형");
+            if (jsonObject.getInt("PregnantFnt") == 1) isPregnant = true;
+            if (jsonObject.getInt("SmellFnt") == 1) isSmell = true;
+            if (jsonObject.getInt("TeethFnt") == 1) isTeeth = true;
+            if (jsonObject.getInt("DietFnt") == 1) isDiet = true;
+
+            if (jsonObject.getInt("AgeFrom") > 12) {
+                int agefrom = jsonObject.getInt("AgeFrom") / 12;
+                tv_agefrom.setText(agefrom + "년");
+            } else tv_ageto.setText(jsonObject.getString("AgeFrom") + "개월");
+
+            if (jsonObject.getString("AgeTo").equals("1000")) tv_ageto.setText("무제한");
+            else if (jsonObject.getInt("AgeTo") > 12) {
+                int ageto = jsonObject.getInt("AgeTo") / 12;
+                tv_ageto.setText(ageto + "년");
+            } else tv_ageto.setText(jsonObject.getString("AgeTo") + "개월");
 
             tv_score.setText(jsonObject.getString("Score"));
+            tv_reviewUserName.setText(jsonObject.getString("UserName"));
+            tv_reviewBody.setText(jsonObject.getString("Body"));
             addSpecial();
             ArrayList<PieEntry> entries = new ArrayList<>();
             ArrayList<String> labelList = new ArrayList<>();
@@ -195,7 +214,7 @@ public class ShowFoodDataActivity extends AppCompatActivity {
             labelList.add("수분");
             protein = (float) jsonObject.getDouble("Protein");
             fat = (float) jsonObject.getDouble("Fat");
-            ash= (float) jsonObject.getDouble("Ash");
+            ash = (float) jsonObject.getDouble("Ash");
             fiber = (float) jsonObject.getDouble("Fiber");
             moisture = (float) jsonObject.getDouble("Moisture");
             calcium = (float) jsonObject.getDouble("Calcium");
@@ -251,6 +270,45 @@ public class ShowFoodDataActivity extends AppCompatActivity {
 
     }
 
+    private void addSpecial() {
+        if (isPregnant) {
+            TextView textView = new TextView(ShowFoodDataActivity.this);
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            textView.setBackgroundResource(R.drawable.test_edittext);
+            textView.setPadding(20, 20, 20, 20);
+            textView.setText("임신");
+            textView.setTextSize(13);
+            gridLayout_special.addView(textView);
+        }
+        if (isDiet) {
+            TextView textView = new TextView(ShowFoodDataActivity.this);
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            textView.setBackgroundResource(R.drawable.test_edittext);
+            textView.setPadding(20, 20, 20, 20);
+            textView.setText("체중 관리");
+            textView.setTextSize(13);
+            gridLayout_special.addView(textView);
+        }
+        if (isTeeth) {
+            TextView textView = new TextView(ShowFoodDataActivity.this);
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            textView.setBackgroundResource(R.drawable.test_edittext);
+            textView.setPadding(20, 20, 20, 20);
+            textView.setText("치아 관리");
+            textView.setTextSize(13);
+            gridLayout_special.addView(textView);
+        }
+        if (isSmell) {
+            TextView textView = new TextView(ShowFoodDataActivity.this);
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            textView.setBackgroundResource(R.drawable.test_edittext);
+            textView.setPadding(20, 20, 20, 20);
+            textView.setText("변냄새 관리");
+            textView.setTextSize(13);
+            gridLayout_special.addView(textView);
+        }
+    }
+
     private class GetFoodData extends AsyncTask<String, String, String> {
         ProgressDialog loading;
 
@@ -264,7 +322,7 @@ public class ShowFoodDataActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             try {
-                URL url = new URL("http://18.216.142.72/getBarcode.php");
+                URL url = new URL("http://18.216.142.72/Android/getBarcode.php");
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
@@ -317,44 +375,6 @@ public class ShowFoodDataActivity extends AppCompatActivity {
 
             setFoodData();
 
-        }
-    }
-    private void addSpecial(){
-        if(isPregnant){
-            TextView textView = new TextView(ShowFoodDataActivity.this);
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setBackgroundResource(R.drawable.test_edittext);
-            textView.setPadding(20,20,20,20);
-            textView.setText("임신");
-            textView.setTextSize(13);
-            gridLayout_special.addView(textView);
-        }
-        if(isDiet){
-            TextView textView = new TextView(ShowFoodDataActivity.this);
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setBackgroundResource(R.drawable.test_edittext);
-            textView.setPadding(20,20,20,20);
-            textView.setText("체중 관리");
-            textView.setTextSize(13);
-            gridLayout_special.addView(textView);
-        }
-        if(isTeeth){
-            TextView textView = new TextView(ShowFoodDataActivity.this);
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setBackgroundResource(R.drawable.test_edittext);
-            textView.setPadding(20,20,20,20);
-            textView.setText("치아 관리");
-            textView.setTextSize(13);
-            gridLayout_special.addView(textView);
-        }
-        if(isSmell){
-            TextView textView = new TextView(ShowFoodDataActivity.this);
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView.setBackgroundResource(R.drawable.test_edittext);
-            textView.setPadding(20,20,20,20);
-            textView.setText("변냄새 관리");
-            textView.setTextSize(13);
-            gridLayout_special.addView(textView);
         }
     }
 }

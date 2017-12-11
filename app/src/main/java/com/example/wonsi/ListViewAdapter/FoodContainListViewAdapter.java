@@ -50,9 +50,9 @@ public class FoodContainListViewAdapter extends BaseAdapter {
         ImageView iv_grade = (ImageView) view.findViewById(R.id.ContainItem_IV_image);
         TextView tv_name = (TextView) view.findViewById(R.id.ContainItem_TV_name);
         FoodContain foodContain = foodContainList.get(i);
-        if(foodContain.getGrade() == 2) iv_grade.setImageResource(R.drawable.containgood);
-        if(foodContain.getGrade() == 1) iv_grade.setImageResource(R.drawable.containnormal);
-        if(foodContain.getGrade() == 0) iv_grade.setImageResource(R.drawable.containbad);
+        if(foodContain.getGrade() == 1) iv_grade.setImageResource(R.drawable.containgood);
+        if(foodContain.getGrade() == 0) iv_grade.setImageResource(R.drawable.containnormal);
+        if(foodContain.getGrade() == -1) iv_grade.setImageResource(R.drawable.containbad);
         tv_name.setText(foodContain.getNote());
         return view;
     }

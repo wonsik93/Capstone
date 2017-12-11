@@ -2,7 +2,6 @@ package com.example.wonsi;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,9 +24,9 @@ import com.example.wonsi.Helper.CustomVolleyRequest;
  */
 
 public class ShowPetDataActivity extends AppCompatActivity implements View.OnClickListener {
-    private ArrayAdapter<CharSequence> adspin;
     int ageYearorMonth = 1;
     int maleOrFemale = 0;
+    private ArrayAdapter<CharSequence> adspin;
     private NetworkImageView iv_petImage;
     private ImageButton btn_addPetImage;
     private Button btn_petagebymonth;
@@ -37,8 +36,7 @@ public class ShowPetDataActivity extends AppCompatActivity implements View.OnCli
     private EditText et_petName;
     private EditText et_petAge;
     private EditText et_petWeight;
-    private Spinner spinner_petSex;
-    private Bitmap photoBitmap;
+    private Spinner spinner_breed;
     private ImageLoader imageLoader;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -49,8 +47,9 @@ public class ShowPetDataActivity extends AppCompatActivity implements View.OnCli
 
         initLayout();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void initLayout(){
+    private void initLayout() {
         iv_petImage = (NetworkImageView) findViewById(R.id.Pet_IV_petimage);
         btn_addPetImage = (ImageButton) findViewById(R.id.Pet_BTN_picture);
         btn_petagebymonth = (Button) findViewById(R.id.Pet_BTN_agemonth);
@@ -65,11 +64,11 @@ public class ShowPetDataActivity extends AppCompatActivity implements View.OnCli
         et_petName = (EditText) findViewById(R.id.Pet_ET_petname);
         et_petAge = (EditText) findViewById(R.id.Pet_ET_age);
         et_petWeight = (EditText) findViewById(R.id.Pet_ET_weight);
-        spinner_petSex = (Spinner) findViewById(R.id.Pet_SPIN_sex);
-        adspin = ArrayAdapter.createFromResource(this,R.array.sex,android.R.layout.simple_spinner_item);
+        spinner_breed = (Spinner) findViewById(R.id.Pet_SPIN_sex);
+        adspin = ArrayAdapter.createFromResource(this, R.array.breed, android.R.layout.simple_spinner_item);
         adspin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_petSex.setAdapter(adspin);
-        spinner_petSex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_breed.setAdapter(adspin);
+        spinner_breed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 maleOrFemale = (int) adspin.getItemId(i);
@@ -82,22 +81,23 @@ public class ShowPetDataActivity extends AppCompatActivity implements View.OnCli
         });
         Intent intent = getIntent();
         et_petName.setText(intent.getStringExtra("PetName"));
-        if(Integer.valueOf(intent.getStringExtra("PetAge")) > 12) {
+        if (Integer.valueOf(intent.getStringExtra("PetAge")) > 12) {
             int year = Integer.valueOf(intent.getStringExtra("PetAge")) / 12;
             et_petAge.setText(String.valueOf(year));
             btn_petagebymonth.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.color_white)));
             btn_petagebymonth.setTextColor(getResources().getColor(R.color.color_button_back));
             btn_petagebyyear.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.color_button_back)));
             btn_petagebyyear.setTextColor(getResources().getColor(R.color.color_white));
-        }else{
+        } else {
             et_petAge.setText(intent.getStringExtra("PetAge"));
         }
 
         et_petWeight.setText(intent.getStringExtra("Weight"));
         et_petType.setText(intent.getStringExtra("TypeName"));
         imageLoader = CustomVolleyRequest.getInstance(this.getApplicationContext()).getImageLoader();
-        imageLoader.get(intent.getStringExtra("image"),ImageLoader.getImageListener(iv_petImage,R.drawable.intro,android.R.drawable.ic_dialog_alert));
-        iv_petImage.setImageUrl(intent.getStringExtra("image"),imageLoader);
+        imageLoader.get(intent.getStringExtra("image"), ImageLoader.getImageListener(iv_petImage, R.drawable.intro, android.R.drawable.ic_dialog_alert));
+        iv_petImage.setImageUrl(intent.getStringExtra("image"), imageLoader);
+        spinner_breed.setSelection(Integer.valueOf(intent.getStringExtra("Species")) - 1);
     }
 
     @Override

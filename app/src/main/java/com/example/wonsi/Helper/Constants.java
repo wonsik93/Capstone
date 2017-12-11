@@ -9,4 +9,5 @@ public class Constants {
     public final static String SERVER_REGISTER_PHP = "http://18.216.142.72/Android/register.php";
     public final static String SERVER_GETUSERPET_PHP = "http://18.216.142.72/Android/getUserPet.php";
     public final static String SERVER_GETTYPE_PHP = "http://18.216.142.72/Android/getType.php";
+    public final static String SERVER_GETSUITABLEFOOD_PHP = "http://18.216.142.72/getSuitableFood.php";
 }

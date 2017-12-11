@@ -32,21 +32,24 @@ import java.net.URL;
 
 public class RegisterUserActivity extends AppCompatActivity implements View.OnClickListener {
     String userid, userpw;
-    EditText editText_ID;
-    EditText editText_Password;
-    Button button_register;
+    private EditText editText_ID;
+    private EditText editText_Password;
+    private Button button_register;
     HttpURLConnection conn;
     NetworkConnection conncheck = new NetworkConnection(RegisterUserActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_registeruser);
 
         if (conncheck.checkConnection() == false) {
             conncheck.connectErrorAlert();
         }
+        initLayout();
 
+    }
+    private void initLayout(){
         editText_ID = (EditText) findViewById(R.id.Register_ET_ID);
         editText_Password = (EditText) findViewById(R.id.Register_ET_Password);
 
@@ -68,7 +71,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
 
     public void registerSuccessAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("회원가입");
+        builder.setTitle("회원가입 성공");
         builder.setMessage("회원가입이 완료되었습니다...").
                 setCancelable(false).
                 setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -148,7 +151,7 @@ public class RegisterUserActivity extends AppCompatActivity implements View.OnCl
             if (result.equalsIgnoreCase("success")) {
                 registerSuccessAlert();
             } else if (result.equalsIgnoreCase("false")) {
-                Toast.makeText(RegisterUserActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterUserActivity.this, "회원등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
             } else if (result.equalsIgnoreCase("user exist")){
                 Toast.makeText(RegisterUserActivity.this, "아이디가 중복되었습니다.", Toast.LENGTH_SHORT).show();
             }

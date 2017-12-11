@@ -54,24 +54,24 @@ import java.util.UUID;
  */
 
 public class RegisterPetActivity extends AppCompatActivity implements View.OnClickListener {
-    Context mContext;
     static final int REQUEST_PETTYPE = 1;
     static final int REQUEST_TAKE_PHOTO = 1000;
     static final int REQUEST_TAKE_ALBUM = 1001;
     static final int REQUEST_IMAGE_CROP = 1002;
-
+    private static final int MULTIPLE_PERMISSIONS = 101;
     private static Uri mImageCaptureUri;
-    private String imagePath;
-    private ArrayAdapter<CharSequence> adspin;
+    Context mContext;
     String saveFolderName = "picture";
     String saveFileName = "photo.jpg";
     File mediaFile = null;
-
     int ageYearorMonth = 1;
-    int maleOrFemale = 0;
+    int breed = 0;
     String returnTypeID;
+    boolean check = true;
+    private String imagePath;
+    private ArrayAdapter<CharSequence> adspin;
     private String logonUsername;
-
+    private String spicies;
     private ImageView iv_petImage;
     private ImageButton btn_addPetImage;
     private Button btn_petagebymonth;
@@ -83,16 +83,11 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
     private EditText et_petWeight;
     private Spinner spinner_petSex;
     private Bitmap photoBitmap;
-
-
     private String[] permissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     }; //권한 설정 변수
-    private static final int MULTIPLE_PERMISSIONS = 101;
-
-    boolean check = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +96,7 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
         mContext = this.getBaseContext();
         Intent intent = getIntent();
         logonUsername = intent.getStringExtra("username");
+        spicies = intent.getStringExtra("Spicies");
         initializeLayout();
         checkPermissions();
     }
@@ -132,7 +128,7 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
                     }
                 };
                 builder.setTitle("업로드할 이미지 선택");
-                builder.setPositiveButton("사진촬영", cameraListener);
+                //builder.setPositiveButton("사진촬영", cameraListener);
                 builder.setNeutralButton("앨범선택", albumListener);
                 builder.setNegativeButton("취소", cancelListener);
                 builder.show();
@@ -152,38 +148,44 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
                 btn_petagebymonth.setTextColor(R.color.color_button_back);
                 break;
             case R.id.Pet_BTN_registerpet:
-                if(TextUtils.isEmpty(imagePath)){
-                    Toast.makeText(getApplicationContext(),"업로드할 사진을 선택해주세요",Toast.LENGTH_SHORT).show();
-                }else{
+                if (TextUtils.isEmpty(imagePath)) {
+                    Toast.makeText(getApplicationContext(), "업로드할 사진을 선택해주세요", Toast.LENGTH_SHORT).show();
+                } else {
                     try {
                         String ImageUploadURL = "http://18.216.142.72/AndroidImageUpload/uploadPetImage.php";
                         String uploadID = UUID.randomUUID().toString();
-                        Log.d("Photo" , logonUsername+ returnTypeID);
-                        new MultipartUploadRequest(this,uploadID,ImageUploadURL)
+                        Log.d("Photo", logonUsername + returnTypeID);
+                        new MultipartUploadRequest(this, uploadID, ImageUploadURL)
                                 .setUtf8Charset()
                                 .addParameter("username", logonUsername)
-                                .addParameter("name",et_petName.getText().toString())
+                                .addParameter("name", et_petName.getText().toString())
                                 .addParameter("age", String.valueOf(Integer.valueOf(et_petAge.getText().toString()) * ageYearorMonth))
                                 .addParameter("weight", et_petWeight.getText().toString())
-                                .addParameter("sex", String.valueOf(maleOrFemale))
+                                .addParameter("breed", String.valueOf(breed))
+                                .addParameter("spicies", spicies)
                                 .addParameter("typeID", returnTypeID)
                                 .addFileToUpload(imagePath, "image")
                                 .setNotificationConfig(new UploadNotificationConfig())
                                 .setMaxRetries(2)
                                 .startUpload();
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
                 }
+
+                finish();
+
                 break;
             case R.id.Pet_ET_pettype:
-                Intent petTypeIntent = new Intent(this,GetPetTypeActivity.class);
-                startActivityForResult(petTypeIntent,REQUEST_PETTYPE);
+                Intent petTypeIntent = new Intent(this, GetPetTypeActivity.class);
+                startActivityForResult(petTypeIntent, REQUEST_PETTYPE);
                 break;
         }
     }
+
     private void initializeLayout() {
 
 
@@ -202,13 +204,14 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
         et_petAge = (EditText) findViewById(R.id.Pet_ET_age);
         et_petWeight = (EditText) findViewById(R.id.Pet_ET_weight);
         spinner_petSex = (Spinner) findViewById(R.id.Pet_SPIN_sex);
-        adspin = ArrayAdapter.createFromResource(this,R.array.sex,android.R.layout.simple_spinner_item);
+        adspin = ArrayAdapter.createFromResource(this, R.array.breed, android.R.layout.simple_spinner_item);
         adspin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_petSex.setAdapter(adspin);
         spinner_petSex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                maleOrFemale = (int) adspin.getItemId(i);
+                breed = (int) adspin.getItemId(i) + 1;
+                Toast.makeText(RegisterPetActivity.this, String.valueOf(breed), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -217,82 +220,87 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
-    private void doTakePhotoAction(){
+
+    private void doTakePhotoAction() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri(saveFileName));
-        cameraIntent.putExtra("return-data",true);
-        startActivityForResult(cameraIntent,REQUEST_TAKE_PHOTO);
+        cameraIntent.putExtra("return-data", true);
+        startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO);
     }
-    private void getGallery(){
+
+    private void getGallery() {
         final Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         galleryIntent.setAction(Intent.ACTION_PICK);
         final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Image");
         galleryIntent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(chooserIntent,REQUEST_TAKE_ALBUM);
+        startActivityForResult(chooserIntent, REQUEST_TAKE_ALBUM);
     }
-    private Uri getImageUri(String saveFile){
+
+    private Uri getImageUri(String saveFile) {
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/DCIM", saveFolderName);
-        if (! mediaStorageDir.exists()){
-            if(! mediaStorageDir.mkdir()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdir()) {
                 Log.d("Make Dir", "fail to create directory");
                 return null;
             }
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        if (saveFile != null){
+        if (saveFile != null) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator + saveFile);
-        } else{
+        } else {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator + "pic_" + timeStamp + ".jpg");
         }
         mImageCaptureUri = Uri.fromFile(mediaFile);
         imagePath = mImageCaptureUri.getPath();
-        Log.e("mimageCaptureUri: ",mImageCaptureUri.toString());
+        Log.e("mimageCaptureUri: ", mImageCaptureUri.toString());
         Log.e("imagePath : ", imagePath);
         return mImageCaptureUri;
     }
-    public String getRealPathFromURI(Uri contentUri){
+
+    public String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri,proj,null,null,null);
-        int column_index= cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if(resultCode != Activity.RESULT_OK) return;
-        switch (requestCode){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) return;
+        switch (requestCode) {
             case REQUEST_TAKE_ALBUM:
                 mImageCaptureUri = data.getData();
-                Log.e("앨범이미지 CROP",mImageCaptureUri.getPath().toString());
+                Log.e("앨범이미지 CROP", mImageCaptureUri.getPath().toString());
                 imagePath = getRealPathFromURI(mImageCaptureUri);
-                Log.e("앨범이미지 경로",imagePath);
-            case REQUEST_TAKE_PHOTO :
+                Log.e("앨범이미지 경로", imagePath);
+            case REQUEST_TAKE_PHOTO:
                 Intent intent = new Intent("com.android.camera.action.CROP");
-                intent.setDataAndType(mImageCaptureUri,"image/*");
+                intent.setDataAndType(mImageCaptureUri, "image/*");
 
-                intent.putExtra("outputX",200);
-                intent.putExtra("outputY",200);
-                intent.putExtra("aspectX",1);
-                intent.putExtra("aspectY",1);
+                intent.putExtra("outputX", 200);
+                intent.putExtra("outputY", 200);
+                intent.putExtra("aspectX", 1);
+                intent.putExtra("aspectY", 1);
                 intent.putExtra("scale", true);
-                intent.putExtra("return-data",true);
+                intent.putExtra("return-data", true);
                 startActivityForResult(intent, REQUEST_IMAGE_CROP);
                 break;
             case REQUEST_IMAGE_CROP:
                 final Bundle extras = data.getExtras();
 
                 String filePath = getImageUri(saveFileName).getPath();
-                Log.e("mimageCaptureUri : ", "Croped" +mImageCaptureUri.toString());
+                Log.e("mimageCaptureUri : ", "Croped" + mImageCaptureUri.toString());
                 imagePath = filePath;
-                if(extras != null){
-                    photoBitmap = (Bitmap)data.getExtras().get("data");
-                    saveCropImage(photoBitmap,imagePath);
-                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mediaFile)));;
-                }else {
-                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+Environment.getExternalStorageDirectory())));
+                if (extras != null) {
+                    photoBitmap = (Bitmap) data.getExtras().get("data");
+                    saveCropImage(photoBitmap, imagePath);
+                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mediaFile)));
+                } else {
+                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
                 }
 
 
@@ -305,20 +313,22 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
         }
 
     }
-    private void saveCropImage(Bitmap bitmap, String filePath){
+
+    private void saveCropImage(Bitmap bitmap, String filePath) {
         File copyFile = new File(filePath);
         BufferedOutputStream bufferedOutputStream = null;
         try {
             copyFile.createNewFile();
             int quality = 100;
             bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(copyFile));
-            bitmap.compress(Bitmap.CompressFormat.JPEG,quality,bufferedOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, bufferedOutputStream);
             bufferedOutputStream.flush();
             bufferedOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     private boolean checkPermissions() {
         int result;
         List<String> permissionList = new ArrayList<>();
@@ -337,7 +347,7 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
 
 
     //아래는 권한 요청 Callback 함수입니다. PERMISSION_GRANTED로 권한을 획득했는지 확인할 수 있습니다. 아래에서는 !=를 사용했기에
-//권한 사용에 동의를 안했을 경우를 if문으로 코딩되었습니다.
+    //권한 사용에 동의를 안했을 경우를 if문으로 코딩되었습니다.
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -373,6 +383,18 @@ public class RegisterPetActivity extends AppCompatActivity implements View.OnCli
     private void showNoPermissionToastAndFinish() {
         Toast.makeText(this, "권한 요청에 동의 해주셔야 이용 가능합니다. 설정에서 권한 허용 하시기 바랍니다.", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mImageCaptureUri != null) {
+            File file = new File(mImageCaptureUri.getPath());
+            if (file.exists()) {
+                file.delete();
+            }
+            mImageCaptureUri = null;
+        }
     }
 }
 
